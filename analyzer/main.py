@@ -16,13 +16,19 @@ parser.add_argument(
     "-O", "--output_folder", type=str, required=True, help="Path to Log Folder"
 )
 parser.add_argument(
-    "-I", "--infer_only", type=bool, default=False, required=False, help="Inference or Training"
+    "-I",
+    "--infer_only",
+    type=bool,
+    default=False,
+    required=False,
+    help="Inference or Training",
 )
 parser.add_argument(
     "-P", "--ckpt_path", type=str, required=False, help="Path to Model Checkpoint"
 )
 
 args = parser.parse_args()
+
 
 def main():
     # Initializing log folder
@@ -44,19 +50,18 @@ def main():
         [label2id, id2label, num_classes] = label_info
 
         # Train model
-        data, network, trainer = train_model(essay_df, config, label_info, output_folder)
+        data, network, trainer = train_model(
+            essay_df, config, label_info, output_folder
+        )
     else:
         # Load Model
         with open(os.path.join(datapath, "label2id.json"), "r") as f:
             label2id = json.load(f)
         num_classes = len(label2id)
-        id2label = {v:k for k, v in label2id.items()}
+        id2label = {v: k for k, v in label2id.items()}
         data, network, trainer = load_saved_model(
-            config, 
-            [label2id, id2label, num_classes],
-            args.ckpt_path,
-            output_folder
-            )
+            config, [label2id, id2label, num_classes], args.ckpt_path, output_folder
+        )
 
     # Inference
     test_df = prepare_test_data(datapath)
@@ -69,5 +74,3 @@ if __name__ == "__main__":
     # python main.py -C "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\configs\config.yaml" -O "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert"
     # D:\Learning\NLP\Projects\EssayInsightAI>python main.py -C "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\configs\config.yaml" -O "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert" -I True -P "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert\lightning_logs\version_0\checkpoints\epoch=0-step=5.ckpt"
     main()
-
-

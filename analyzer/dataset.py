@@ -21,10 +21,10 @@ class FeedbackPrizeDataset(Dataset):
         text = self.df.iloc[idx]["text"]
         text_encoding = self.tokenizer(
             text.split(),
-            max_length = self.max_len,
+            max_length=self.max_len,
             truncation=True,
             is_split_into_words=True,
-            padding = "max_length"
+            padding="max_length",
         )
         word_ids = text_encoding.word_ids()
 
@@ -46,35 +46,46 @@ class FeedbackPrizeDataset(Dataset):
                 prev_idx = idx
 
             output["labels"] = torch.as_tensor(labels)
-            
-        output["word_ids"] = torch.as_tensor([i if i is not None else -1 for i in word_ids])
+
+        output["word_ids"] = torch.as_tensor(
+            [i if i is not None else -1 for i in word_ids]
+        )
 
         return output
-    
+
 
 class FeedbackPrizeDataModule(pl.LightningDataModule):
     def __init__(self, config, label2id, df=None):
         super().__init__()
-        
+
         self.config = config
         self.label2id = label2id
         self.df = df
 
     def prepare_data(self):
-        self.tokenizer = AutoTokenizer.from_pretrained(self.config["paths"]["tokenizer"])
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            self.config["paths"]["tokenizer"]
+        )
 
     def setup(self, stage=None):
-        self.train_df, self.val_df = train_test_split(self.df, test_size=self.config["data"]["val_split"])
+        self.train_df, self.val_df = train_test_split(
+            self.df, test_size=self.config["data"]["val_split"]
+        )
 
     def train_dataloader(self):
-        train_ds = FeedbackPrizeDataset(self.train_df, self.config, self.label2id, self.tokenizer, return_label=True)
+        train_ds = FeedbackPrizeDataset(
+            self.train_df, self.config, self.label2id, self.tokenizer, return_label=True
+        )
         return DataLoader(train_ds, **self.config["train_ds"])
 
     def val_dataloader(self):
-        val_ds = FeedbackPrizeDataset(self.val_df, self.config, self.label2id, self.tokenizer, return_label=True)
+        val_ds = FeedbackPrizeDataset(
+            self.val_df, self.config, self.label2id, self.tokenizer, return_label=True
+        )
         return DataLoader(val_ds, **self.config["test_ds"])
 
     def test_dataloader(self, test_df):
-        test_ds = FeedbackPrizeDataset(test_df, self.config, self.label2id, self.tokenizer, return_label=False)
+        test_ds = FeedbackPrizeDataset(
+            test_df, self.config, self.label2id, self.tokenizer, return_label=False
+        )
         return DataLoader(test_ds, **self.config["test_ds"])
-
