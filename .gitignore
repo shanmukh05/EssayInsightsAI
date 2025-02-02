@@ -1,1 +1,4 @@
 analyzer/data/
+analyzer/output/
+analyzer/models/
+analyzer/__pycache__/
