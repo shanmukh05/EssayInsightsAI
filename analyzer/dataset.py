@@ -19,7 +19,6 @@ class FeedbackPrizeDataset(Dataset):
 
     def __getitem__(self, idx):
         text = self.df.iloc[idx]["text"]
-        fold_label = self.df.iloc[idx]["fold_label"]
         text_encoding = self.tokenizer(
             text.split(),
             max_length=self.max_len,
@@ -47,11 +46,12 @@ class FeedbackPrizeDataset(Dataset):
                 prev_idx = idx
 
             output["labels"] = torch.as_tensor(labels)
+            fold_label = self.df.iloc[idx]["fold_label"]
+            output["fold_label"] = fold_label
 
         output["word_ids"] = torch.as_tensor(
             [i if i is not None else -1 for i in word_ids]
         )
-        output["fold_label"] = fold_label
 
         return output
 

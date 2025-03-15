@@ -21,7 +21,7 @@ parser.add_argument(
     "--task",
     type=str,
     default=False,
-    required=False,
+    required=True,
     help="Inference or Training or Postprocessing",
     choices=["Train", "Inference", "Postprocess"],
 )
@@ -88,6 +88,6 @@ def main():
 
 
 if __name__ == "__main__":
-    # python main.py -C "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\configs\config.yaml" -O "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert"
-    # python main.py -C "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\configs\config.yaml" -O "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert" -I True -P "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert\lightning_logs\version_0\checkpoints\epoch=0-step=5.ckpt"
+    # python main.py -C "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\configs\config.yaml" -O "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert" -T "Train"
+    # python main.py -C "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\configs\config.yaml" -O "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert" -T "Inference" -P "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert\train_val\lightning_logs\version_0\checkpoints\epoch=9-step=50.ckpt"
     main()

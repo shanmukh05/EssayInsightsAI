@@ -66,7 +66,7 @@ class FeebackPrizeNetwork(pl.LightningModule):
         ids = batch["input_ids"].to(dtype=torch.long)
         attn_mask = batch["attention_mask"].to(dtype=torch.long)
 
-        logits = self.model(input_ids=ids, attention_mask=attn_mask)[0]
+        logits = self.model(input_ids=ids, attention_mask=attn_mask)
 
         return logits
 
