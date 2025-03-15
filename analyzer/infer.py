@@ -28,8 +28,7 @@ def inference(dataloader, network, trainer, id2label):
     return predictions
 
 
-def submission(df, dataloader, network, trainer, id2label):
-    predictions = inference(dataloader, network, trainer, id2label)
+def submission(df, predictions):
     act_predictions = []
 
     for i in range(len(df)):

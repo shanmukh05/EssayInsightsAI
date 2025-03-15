@@ -2,9 +2,12 @@ paths:
   data: D:\Learning\NLP\Projects\EssayInsightAI\analyzer\data  
   tokenizer: D:\Learning\NLP\Projects\EssayInsightAI\analyzer\models\distilbert-base-uncased
   model: D:\Learning\NLP\Projects\EssayInsightAI\analyzer\models\distilbert-base-uncased
+seed: 2024
 data:
   max_len: 512
   val_split: 0.1
+  strategy: stratifiedkfold
+  num_folds: 2
 train_ds:
   batch_size: 4
   shuffle: True
@@ -18,4 +21,11 @@ test_ds:
 model:
 training:
   lr: 0.00002
-  epochs: 2
+  epochs: 3
+postprocess:
+  models:
+    - D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert\train_val\lightning_logs\version_0\checkpoints\epoch=8-step=45.ckpt
+    - D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert\kfold_1\lightning_logs\version_0\checkpoints\epoch=2-step=9.ckpt
+    - D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert\kfold_2\lightning_logs\version_0\checkpoints\epoch=2-step=9.ckpt
+    - D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert\stratifiedkfold_1\lightning_logs\version_0\checkpoints\epoch=2-step=9.ckpt
+    - D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert\stratifiedkfold_2\lightning_logs\version_0\checkpoints\epoch=1-step=6.ckpt

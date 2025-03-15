@@ -1,9 +1,9 @@
 import ast
 import torch
 import pytorch_lightning as pl
-from torch.utils.data import Dataset, DataLoader
-from sklearn.model_selection import train_test_split
 from transformers import AutoTokenizer
+from torch.utils.data import Dataset, DataLoader
+from sklearn.model_selection import KFold, StratifiedKFold, train_test_split
 
 
 class FeedbackPrizeDataset(Dataset):
@@ -19,6 +19,7 @@ class FeedbackPrizeDataset(Dataset):
 
     def __getitem__(self, idx):
         text = self.df.iloc[idx]["text"]
+        fold_label = self.df.iloc[idx]["fold_label"]
         text_encoding = self.tokenizer(
             text.split(),
             max_length=self.max_len,
@@ -50,6 +51,7 @@ class FeedbackPrizeDataset(Dataset):
         output["word_ids"] = torch.as_tensor(
             [i if i is not None else -1 for i in word_ids]
         )
+        output["fold_label"] = fold_label
 
         return output
 
@@ -59,6 +61,7 @@ class FeedbackPrizeDataModule(pl.LightningDataModule):
         super().__init__()
 
         self.config = config
+        self.data_split = config["data"]["strategy"]
         self.label2id = label2id
         self.df = df
 
@@ -68,9 +71,20 @@ class FeedbackPrizeDataModule(pl.LightningDataModule):
         )
 
     def setup(self, stage=None):
-        self.train_df, self.val_df = train_test_split(
-            self.df, test_size=self.config["data"]["val_split"]
-        )
+        if self.data_split == "train_val":
+            self.train_df, self.val_df = train_test_split(
+                self.df, test_size=self.config["data"]["val_split"]
+            )
+        elif self.data_split == "kfold":
+            kfold = KFold(n_splits=self.config["data"]["num_folds"])
+            train_ids, val_ids = list(kfold.split(self.df))[self.k]
+            self.train_df, self.val_df = self.df.iloc[train_ids], self.df.iloc[val_ids]
+        elif self.data_split == "stratifiedkfold":
+            kfold = StratifiedKFold(n_splits=self.config["data"]["num_folds"])
+            train_ids, val_ids = list(kfold.split(self.df, self.df["fold_label"]))[
+                self.k
+            ]
+            self.train_df, self.val_df = self.df.iloc[train_ids], self.df.iloc[val_ids]
 
     def train_dataloader(self):
         train_ds = FeedbackPrizeDataset(
