@@ -60,7 +60,8 @@ def load_saved_model(config, label_info, ckpt_path, output_folder):
     return data, network, trainer
 
 
-def load_saved_models(config, label_info, ckpt_paths, output_folder):
+def load_saved_models(config, label_info, output_folder):
+    ckpt_paths = config["postprocess"]["models"]
     [label2id, id2label, num_classes] = label_info
     data = FeedbackPrizeDataModule(config, label2id)
     data.prepare_data()

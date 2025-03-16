@@ -7,7 +7,7 @@ import pandas as pd
 from utils import load_config, get_logger, preprocess_labels, prepare_test_data
 from train import train_model, load_saved_model, load_saved_models
 from infer import submission, inference
-from postprocess import post_submission
+from postprocess import post_process
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -75,19 +75,22 @@ def main():
             label2id = json.load(f)
         num_classes = len(label2id)
         id2label = {v: k for k, v in label2id.items()}
-        data, network_ls, trainer = load_saved_model(
-            config, [label2id, id2label, num_classes], args.ckpt_path, output_folder
+        data, network_ls, trainer = load_saved_models(
+            config, [label2id, id2label, num_classes], output_folder
         )
 
         # Inference
         test_df = prepare_test_data(datapath)
         test_loader = data.test_dataloader(test_df)
 
-        sub_df = post_submission(test_df, test_loader, network_ls, trainer, id2label)
+        sub_df = post_process(
+            test_df, config, test_loader, network_ls, trainer, id2label
+        )
         sub_df.to_csv(os.path.join(output_folder, "submission.csv"), index=False)
 
 
 if __name__ == "__main__":
     # python main.py -C "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\configs\config.yaml" -O "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert" -T "Train"
     # python main.py -C "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\configs\config.yaml" -O "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert" -T "Inference" -P "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert\train_val\lightning_logs\version_0\checkpoints\epoch=9-step=50.ckpt"
+    # python main.py -C "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\configs\config.yaml" -O "D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert" -T "Postprocess"
     main()

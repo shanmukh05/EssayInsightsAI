@@ -4,12 +4,19 @@ import pandas as pd
 
 def inference(dataloader, network, trainer, id2label):
     logits = trainer.predict(network, dataloaders=dataloader)
-    preds = torch.argmax(torch.concat(logits, axis=0), axis=-1).cpu().numpy()
+    logits = torch.concat(logits, axis=0)
 
     word_ids = []
     for batch in dataloader:
         word_ids.extend(batch["word_ids"].numpy())
 
+    predictions = logits2pred(logits, id2label, word_ids)
+
+    return predictions
+
+
+def logits2pred(logits, id2label, word_ids):
+    preds = torch.argmax(logits, axis=-1).cpu().numpy()
     predictions = []
     for i, pred in enumerate(preds):
         pred_token = [id2label[j] for j in pred]
@@ -24,7 +31,6 @@ def inference(dataloader, network, trainer, id2label):
                 prediction.append(pred_token[id_])
                 prev_wid = wid
         predictions.append(prediction)
-
     return predictions
 
 
