@@ -21,7 +21,7 @@ test_ds:
 model:
 training:
   lr: 0.00002
-  epochs: 3
+  epochs: 10
 postprocess:
   models:
     - D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert\train_val\lightning_logs\version_0\checkpoints\epoch=9-step=50.ckpt
@@ -31,5 +31,5 @@ postprocess:
     # - D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert\stratifiedkfold_2\lightning_logs\version_0\checkpoints\epoch=1-step=6.ckpt
   operations:
     # - soft_ensemble
-    # - hard_ensemble
+    - hard_ensemble
     - bound_average

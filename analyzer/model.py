@@ -5,6 +5,7 @@ import torchmetrics
 import pytorch_lightning as pl
 from transformers import AutoConfig, AutoModel
 from torch.optim.lr_scheduler import CosineAnnealingLR
+from lightning.pytorch.callbacks.early_stopping import EarlyStopping
 
 
 class FeebackPrizeNetwork(pl.LightningModule):
@@ -79,6 +80,11 @@ class FeebackPrizeNetwork(pl.LightningModule):
         scheduler = CosineAnnealingLR(optim, T_max=10, eta_min=1e-5)
 
         return {"optimizer": optim, "lr_scheduler": scheduler}
+    
+    def configure_callbacks(self):
+        early_stop = EarlyStopping(monitor="val_loss", mode="min", patience=3)
+
+        return [early_stop]
 
     def calc_acc(self, labels, logits, acc_fn):
         labels = labels.view(-1)
