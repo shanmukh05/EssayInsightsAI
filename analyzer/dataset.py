@@ -67,7 +67,8 @@ class FeedbackPrizeDataModule(pl.LightningDataModule):
 
     def prepare_data(self):
         self.tokenizer = AutoTokenizer.from_pretrained(
-            self.config["paths"]["tokenizer"]
+            self.config["paths"]["tokenizer"],
+            add_prefix_space=True
         )
 
     def setup(self, stage=None):
