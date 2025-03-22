@@ -9,7 +9,7 @@ data:
   strategy: stratifiedkfold
   num_folds: 2
 train_ds:
-  batch_size: 4
+  batch_size: 2
   shuffle: True
   num_workers: 2
   pin_memory: True

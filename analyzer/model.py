@@ -116,7 +116,7 @@ class FeedbackModel(nn.Module):
         self.output = nn.Linear(config_model.hidden_size, num_classes)
 
     def forward(self, input_ids, attention_mask, labels=None):
-        emb = self.model(input_ids)[0]
+        emb = self.model(input_ids, attention_mask=attention_mask)[0]
         preds1 = self.output(self.dropout1(emb))
         preds2 = self.output(self.dropout2(emb))
         preds3 = self.output(self.dropout3(emb))
