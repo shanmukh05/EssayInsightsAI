@@ -12,7 +12,7 @@ def post_process(test_df, config, dataloader, network_ls, trainer, id2label):
 
     word_ids = []
     for batch in dataloader:
-        word_ids.extend(batch["word_ids"].numpy())
+        word_ids.extend(batch["word_ids"].cpu().numpy())
 
     for network in network_ls:
         logits = trainer.predict(network, dataloaders=dataloader)

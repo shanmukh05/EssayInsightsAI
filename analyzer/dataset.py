@@ -17,8 +17,8 @@ class FeedbackPrizeDataset(Dataset):
     def __len__(self):
         return len(self.df)
 
-    def __getitem__(self, idx):
-        text = self.df.iloc[idx]["text"]
+    def __getitem__(self, id):
+        text = self.df.iloc[id]["text"]
         text_encoding = self.tokenizer(
             text.split(),
             max_length=self.max_len,
@@ -31,7 +31,7 @@ class FeedbackPrizeDataset(Dataset):
         output = {k: torch.as_tensor(v) for k, v in text_encoding.items()}
 
         if self.return_label:
-            word_labels = ast.literal_eval(self.df.iloc[idx]["prediction"])
+            word_labels = ast.literal_eval(self.df.iloc[id]["prediction"])
 
             prev_idx = None
             labels = []
@@ -46,7 +46,7 @@ class FeedbackPrizeDataset(Dataset):
                 prev_idx = idx
 
             output["labels"] = torch.as_tensor(labels)
-            fold_label = self.df.iloc[idx]["fold_label"]
+            fold_label = self.df.iloc[id]["fold_label"]
             output["fold_label"] = fold_label
 
         output["word_ids"] = torch.as_tensor(

@@ -8,7 +8,7 @@ def inference(dataloader, network, trainer, id2label):
 
     word_ids = []
     for batch in dataloader:
-        word_ids.extend(batch["word_ids"].numpy())
+        word_ids.extend(batch["word_ids"].cpu().numpy())
 
     predictions = logits2pred(logits, id2label, word_ids)
 
