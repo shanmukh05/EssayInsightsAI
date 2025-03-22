@@ -4,6 +4,7 @@ import torch.nn as nn
 import torchmetrics
 import pytorch_lightning as pl
 from transformers import AutoConfig, AutoModel
+from torch.optim.lr_scheduler import CosineAnnealingLR
 
 
 class FeebackPrizeNetwork(pl.LightningModule):
@@ -75,7 +76,9 @@ class FeebackPrizeNetwork(pl.LightningModule):
             self.model.parameters(), lr=self.config["training"]["lr"]
         )
 
-        return optim
+        scheduler = CosineAnnealingLR(optim, T_max=10, eta_min=1e-5)
+
+        return {"optimizer": optim, "lr_scheduler": scheduler}
 
     def calc_acc(self, labels, logits, acc_fn):
         labels = labels.view(-1)
