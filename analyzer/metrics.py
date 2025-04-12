@@ -3,17 +3,16 @@ def measure_overlap(pred, true):
     true = set(true.split())
 
     num_pred, num_true = len(pred), len(true)
+    if len(pred) == 0 or len(true) == 0:
+        return 0.0, 0.0
+
     num_overlap = len(true.intersection(pred))
 
     return num_overlap / num_true, num_overlap / num_pred
 
 
 def competition_metric(pred_df, true_df):
-    true_df = (
-        true_df[["id", "discourse_type", "predictionstring"]]
-        .reset_index(drop=True)
-        .copy()
-    )
+    true_df = true_df[["id", "class", "predictionstring"]].reset_index(drop=True).copy()
     pred_df = pred_df.reset_index(drop=True).copy()
 
     pred_df["pred_id"] = pred_df.index
@@ -22,7 +21,7 @@ def competition_metric(pred_df, true_df):
     comb_df = pred_df.merge(
         true_df,
         left_on=["id", "class"],
-        right_on=["id", "discourse_type"],
+        right_on=["id", "class"],
         how="outer",
         suffixes=("_pred", "_true"),
     )

@@ -80,7 +80,7 @@ class FeebackPrizeNetwork(pl.LightningModule):
         scheduler = CosineAnnealingLR(optim, T_max=10, eta_min=1e-5)
 
         return {"optimizer": optim, "lr_scheduler": scheduler}
-    
+
     def configure_callbacks(self):
         early_stop = EarlyStopping(monitor="val_loss", mode="min", patience=3)
 
