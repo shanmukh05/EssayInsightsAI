@@ -104,14 +104,14 @@ class FeedbackModel(nn.Module):
     def __init__(self, config, num_classes, label2id, id2label):
         super(FeedbackModel, self).__init__()
 
-        self.model, config_model = self.init_model(
+        self.backbone, config_backbone = self.init_backbone(
             config, num_classes, label2id, id2label
         )
 
         self.dropout1 = nn.Dropout(0.3)
 
-        input_size = config_model.hidden_size
-        hidden_size = config_model.hidden_size // 2
+        input_size = config_backbone.hidden_size
+        hidden_size = config_backbone.hidden_size // 2
         self.bilstm = nn.LSTM(
             input_size=input_size,
             hidden_size=hidden_size,
@@ -124,7 +124,7 @@ class FeedbackModel(nn.Module):
         self.classifier = nn.Linear(hidden_size * 2, num_classes)
 
     def forward(self, input_ids, attention_mask, labels=None):
-        pretrain_output = self.model(input_ids, attention_mask=attention_mask)
+        pretrain_output = self.backbone(input_ids, attention_mask=attention_mask)
         embeds = pretrain_output.last_hidden_state
 
         output = self.dropout1(embeds)
@@ -139,29 +139,29 @@ class FeedbackModel(nn.Module):
         else:
             return logits
 
-    def init_model(self, config, num_classes, label2id, id2label):
-        model_path = config["paths"]["model"]
-        if os.path.exists(model_path):
-            config_model = AutoConfig.from_pretrained(
+    def init_backbone(self, config, num_classes, label2id, id2label):
+        path = config["paths"]["model"]
+        if os.path.exists(path):
+            config_backbone = AutoConfig.from_pretrained(
                 config["paths"]["model"] + "/config.json"
             )
-            config_model.num_labels = num_classes
-            config_model.id2label = id2label
-            config_model.label2id = label2id
-            model = AutoModel.from_pretrained(
+            config_backbone.num_labels = num_classes
+            config_backbone.id2label = id2label
+            config_backbone.label2id = label2id
+            backbone = AutoModel.from_pretrained(
                 config["paths"]["model"],
-                config=config_model,
+                config=config_backbone,
             )
         else:
-            config_model = AutoConfig.from_pretrained(config["paths"]["model"])
-            model = AutoModel.from_pretrained(
+            config_backbone = AutoConfig.from_pretrained(config["paths"]["model"])
+            backbone = AutoModel.from_pretrained(
                 config["paths"]["model"],
                 label2id=label2id,
                 id2label=id2label,
                 num_labels=num_classes,
             )
 
-        return model, config_model
+        return backbone, config_backbone
 
     def get_loss(self, outputs, targets, attention_mask):
         loss_fn = nn.CrossEntropyLoss()
