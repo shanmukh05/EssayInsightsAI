@@ -107,22 +107,30 @@ class FeedbackModel(nn.Module):
         self.model, config_model = self.init_model(
             config, num_classes, label2id, id2label
         )
-        self.drop_out = nn.Dropout(0.1)
-        self.dropout1 = nn.Dropout(0.1)
-        self.dropout2 = nn.Dropout(0.2)
-        self.dropout3 = nn.Dropout(0.3)
-        self.dropout4 = nn.Dropout(0.4)
-        self.dropout5 = nn.Dropout(0.5)
-        self.output = nn.Linear(config_model.hidden_size, num_classes)
+
+        self.dropout1 = nn.Dropout(0.3)
+
+        input_size = config_model.hidden_size
+        hidden_size = config_model.hidden_size // 2
+        self.bilstm = nn.LSTM(
+            input_size=input_size,
+            hidden_size=hidden_size,
+            num_layers=1,
+            batch_first=True,
+            bidirectional=True,
+        )
+
+        self.dropout2 = nn.Dropout(0.3)
+        self.classifier = nn.Linear(hidden_size * 2, num_classes)
 
     def forward(self, input_ids, attention_mask, labels=None):
-        emb = self.model(input_ids, attention_mask=attention_mask)[0]
-        preds1 = self.output(self.dropout1(emb))
-        preds2 = self.output(self.dropout2(emb))
-        preds3 = self.output(self.dropout3(emb))
-        preds4 = self.output(self.dropout4(emb))
-        preds5 = self.output(self.dropout5(emb))
-        preds = (preds1 + preds2 + preds3 + preds4 + preds5) / 5
+        pretrain_output = self.model(input_ids, attention_mask=attention_mask)
+        embeds = pretrain_output.last_hidden_state
+
+        output = self.dropout1(embeds)
+        output, _ = self.bilstm(output)
+        output = self.dropout2(output)
+        preds = self.classifier(output)
 
         logits = torch.softmax(preds, dim=-1)
         if labels is not None:
