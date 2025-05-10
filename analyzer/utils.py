@@ -10,7 +10,7 @@ from tqdm import tqdm
 def preprocess_labels(label_df, essay_df, datapath):
     annot_path = os.path.join(datapath, "train_essays_annotated.csv")
     if os.path.exists(annot_path):
-        essay_df = pd.read_csv(annot_path).iloc[:500]
+        essay_df = pd.read_csv(annot_path).iloc[:50]
     else:
         predictions = []
         for _, row in tqdm(essay_df.iterrows()):
@@ -29,9 +29,9 @@ def preprocess_labels(label_df, essay_df, datapath):
         essay_df.to_csv(annot_path, index=False)
 
     unq_discourses = label_df["discourse_type"].unique()
-    unq_labels = (
-        ["O"] + [f"B-{i}" for i in unq_discourses] + [f"I-{i}" for i in unq_discourses]
-    )
+    unq_labels = ["O"]
+    for d in unq_discourses:
+        unq_labels.extend([f"B-{d}", f"I-{d}"])
 
     label2id = {k: i for i, k in enumerate(unq_labels)}
     id2label = {v: k for k, v in label2id.items()}

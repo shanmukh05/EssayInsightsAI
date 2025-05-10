@@ -1,7 +1,7 @@
 paths:
   data: D:\Learning\NLP\Projects\EssayInsightAI\analyzer\data  
-  tokenizer: D:\Learning\NLP\Projects\EssayInsightAI\analyzer\models\distilbert-base-uncased
-  model: D:\Learning\NLP\Projects\EssayInsightAI\analyzer\models\distilbert-base-uncased
+  tokenizer: D:\Learning\NLP\Projects\EssayInsightAI\analyzer\models\bert-large-uncased
+  model: D:\Learning\NLP\Projects\EssayInsightAI\analyzer\models\bert-large-uncased
 seed: 2024
 data:
   max_len: 512
@@ -21,7 +21,7 @@ test_ds:
 model:
 training:
   lr: 0.00002
-  epochs: 10
+  epochs: 5
 postprocess:
   models:
     # - D:\Learning\NLP\Projects\EssayInsightAI\analyzer\output\distilbert_uncased\kfold_1\lightning_logs\version_0\checkpoints\epoch=9-step=3900.ckpt

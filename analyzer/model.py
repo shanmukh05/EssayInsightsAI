@@ -104,9 +104,10 @@ class FeedbackModel(nn.Module):
     def __init__(self, config, num_classes, label2id, id2label):
         super(FeedbackModel, self).__init__()
 
-        self.backbone, config_backbone = self.init_backbone(
+        self.backbone, config_backbone = self._init_backbone(
             config, num_classes, label2id, id2label
         )
+        self._freeze_layers()
 
         self.dropout1 = nn.Dropout(0.3)
 
@@ -139,7 +140,20 @@ class FeedbackModel(nn.Module):
         else:
             return logits
 
-    def init_backbone(self, config, num_classes, label2id, id2label):
+    def get_loss(self, outputs, targets, attention_mask):
+        loss_fn = nn.CrossEntropyLoss()
+        active_logits = outputs.reshape(-1, outputs.shape[-1])
+        true_labels = targets.reshape(-1)
+
+        idxs = attention_mask.reshape(-1) == 1
+        active_logits = active_logits[idxs]
+        true_labels = true_labels[idxs].to(torch.long)
+
+        loss = loss_fn(active_logits, true_labels)
+
+        return loss
+
+    def _init_backbone(self, config, num_classes, label2id, id2label):
         path = config["paths"]["model"]
         if os.path.exists(path):
             config_backbone = AutoConfig.from_pretrained(
@@ -163,15 +177,13 @@ class FeedbackModel(nn.Module):
 
         return backbone, config_backbone
 
-    def get_loss(self, outputs, targets, attention_mask):
-        loss_fn = nn.CrossEntropyLoss()
-        active_logits = outputs.reshape(-1, outputs.shape[-1])
-        true_labels = targets.reshape(-1)
+    def _freeze_layers(self):
+        backbone_name = self.backbone.__class__.__name__
 
-        idxs = attention_mask.reshape(-1) == 1
-        active_logits = active_logits[idxs]
-        true_labels = true_labels[idxs].to(torch.long)
-
-        loss = loss_fn(active_logits, true_labels)
-
-        return loss
+        if backbone_name == "FunnelModel":
+            self.backbone.embeddings.requires_grad_(False)
+            self.backbone.encoder.attention_structure.requires_grad_(False)
+            self.backbone.encoder.blocks[0:2].requires_grad_(False)
+        else:
+            self.backbone.embeddings.requires_grad_(False)
+            self.backbone.encoder.layer[:12].requires_grad_(False)

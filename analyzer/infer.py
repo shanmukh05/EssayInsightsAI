@@ -41,27 +41,27 @@ def submission(df, predictions):
 
         idx = df.id.values[i]
         pred = predictions[i]
-        j = 0
-        while j < len(pred):
-            cls = pred[j]
+        start = 0
+        while start < len(pred):
+            cls = pred[start]
+
             if cls == "O":
-                j += 1
+                start += 1
             else:
+                end = start + 1
                 cls = cls.replace("B", "I")
-            end = j + 1
-            while end < len(pred) and pred[end] == cls:
-                end += 1
+                while end < len(pred) and pred[end] == cls:
+                    end += 1
 
-            if cls != "O" and cls != "" and end - j > 7:
-                act_predictions.append(
-                    (
-                        idx,
-                        cls.replace("I-", ""),
-                        " ".join(map(str, list(range(j, end)))),
+                if end - start > 7:
+                    act_predictions.append(
+                        (
+                            idx,
+                            cls.replace("I-", ""),
+                            " ".join(map(str, list(range(start, end)))),
+                        )
                     )
-                )
-
-            j = end
+                start = end
 
     sub_df = pd.DataFrame(act_predictions)
     sub_df.columns = ["id", "class", "predictionstring"]
