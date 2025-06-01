@@ -184,6 +184,8 @@ class FeedbackModel(nn.Module):
             self.backbone.embeddings.requires_grad_(False)
             self.backbone.encoder.attention_structure.requires_grad_(False)
             self.backbone.encoder.blocks[0:2].requires_grad_(False)
+        elif backbone_name == "DistilBertModel":
+            return
         else:
             self.backbone.embeddings.requires_grad_(False)
             self.backbone.encoder.layer[:12].requires_grad_(False)
