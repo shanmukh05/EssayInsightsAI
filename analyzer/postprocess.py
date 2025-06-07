@@ -3,7 +3,7 @@ import pandas as pd
 from collections import Counter
 from scipy.cluster.hierarchy import fcluster, linkage
 
-from infer import logits2pred, submission
+from analyzer.infer import logits2pred, submission
 
 
 def post_process(test_df, config, dataloader, network_ls, trainer, id2label):

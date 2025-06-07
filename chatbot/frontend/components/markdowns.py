@@ -13,11 +13,12 @@ def get_css_style():
         }
         .st-emotion-cache-janbn0 {
             flex-direction: row-reverse;
-            max-width: 50%;
+            max-width: 80%;
             text-align: right;
             margin-left: auto; 
             margin-right: 0; 
             background-color: #424949;
+            border-radius: 25px; 
         }
         .st-emotion-cache-4oy321 { 
             border-style: none;
@@ -78,4 +79,38 @@ def get_details_html():
 
             ---
         """
+    )
+
+
+def style_seg_button():
+    st.markdown(
+        """
+        <style>
+        .st-key-seg_button .stButton button {
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 10px;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            bottom: 115px;
+        }
+
+        .st-key-seg_button .stButton button:hover {
+            background-color: #357ae8;
+            transform: translateY(-2px);
+        }
+
+        .st-key-seg_button .stButton button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
     )

@@ -1,9 +1,19 @@
 import streamlit as st
 import os
+import torch
+
+torch.classes.__path__ = []
+import sys
+
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+
 
 from components.markdowns import get_css_style, get_intro_html, get_details_html
 from components.sidepanel import get_sidepanel
 from components.input_box import get_input_section
+from chatbot.frontend.components.analyze_button import get_analyze_button
 
 # --- Streamlit Page Configuration ---
 st.set_page_config(
@@ -48,9 +58,14 @@ if st.session_state.chat_enabled:
         if message["role"] == "user":
             with st.chat_message("user"):
                 st.write(message["content"])
-        else:  # role == "assistant"
+        elif message["role"] == "assistant":
             with st.chat_message("assistant"):
-                st.write(message["content"])
+                st.write(message["content"], unsafe_allow_html=True)
+        elif message["role"] == "analyzer":
+            with st.chat_message("assistant"):
+                st.write(message["content"], unsafe_allow_html=True)
+
+    get_analyze_button()
 
     # Chat input at the bottom
     user_query = st.chat_input("Ask me about your essay or ask for feedback...")
@@ -66,9 +81,6 @@ if st.session_state.chat_enabled:
         # Simulate bot response
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
-                # --- Placeholder for OpenAI API Call ---
-                # In a real application, you would make an API call here.
-                # Example (requires 'openai' library installed):
                 # import openai
                 # openai.api_key = openai_api_key
                 # try:

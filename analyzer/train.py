@@ -1,8 +1,8 @@
 import os
 import pytorch_lightning as pl
 
-from dataset import FeedbackPrizeDataModule
-from model import FeebackPrizeNetwork, FeedbackModel
+from analyzer.dataset import FeedbackPrizeDataModule
+from analyzer.model import FeebackPrizeNetwork, FeedbackModel
 
 
 def train_model(essay_df, config, label_info, output_folder):

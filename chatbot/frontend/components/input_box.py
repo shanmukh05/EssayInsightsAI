@@ -3,7 +3,6 @@ import streamlit as st
 
 def get_input_section():
     col1, col2 = st.columns(2)
-
     with col1:
         uploaded_file = st.file_uploader(
             "Upload your essay file (e.g., .txt, .md)",

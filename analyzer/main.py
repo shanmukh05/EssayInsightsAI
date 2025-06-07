@@ -4,10 +4,10 @@ import json
 import argparse
 import pandas as pd
 
-from utils import load_config, get_logger, preprocess_labels, prepare_test_data
-from train import train_model, load_saved_model, load_saved_models
-from infer import submission, inference
-from postprocess import post_process
+from analyzer.utils import load_config, get_logger, preprocess_labels, prepare_test_data
+from analyzer.train import train_model, load_saved_model, load_saved_models
+from analyzer.infer import submission, inference
+from analyzer.postprocess import post_process
 
 parser = argparse.ArgumentParser()
 parser.add_argument(

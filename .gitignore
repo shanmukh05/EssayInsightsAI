@@ -2,4 +2,7 @@ analyzer/data/
 analyzer/output/
 analyzer/models/
 analyzer/__pycache__/
-chatbot/frontend/components/__pycache__/
+chatbot/backend/logs/
+chatbot/*/*/__pycache__/
+chatbot/*/__pycache__/
+chatbot/__pycache__/
