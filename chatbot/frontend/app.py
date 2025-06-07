@@ -51,7 +51,10 @@ if not st.session_state.chat_enabled:
 
 # --- Chat Interface ---
 if st.session_state.chat_enabled:
-    st.markdown("# 🤖 EssayBot")
+    st.markdown(
+        "<h1 style='position:fixed; top:30px; left:350px;'> 🤖 EssayBot</h1>",
+        unsafe_allow_html=True,
+    )
 
     # Display chat messages from history
     for message in st.session_state.chat_history:
