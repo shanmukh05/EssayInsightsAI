@@ -1,5 +1,4 @@
 import pandas as pd
-import streamlit as st
 
 from analyzer.train import load_saved_model
 from analyzer.infer import inference
@@ -75,7 +74,7 @@ def analyze_essay(input_text):
     predictions = [i if i != "O" else "None" for i in predictions]
 
     # words = ["According", "to", "experts,", "global", "warming", "is", "not", "universally", "agreed", "upon."]
-    # classes = ["Lead", "Lead", "Evidence", "Claim", "Claim", "Counterclaim", "Counterclaim", "Rebuttal", "Rebuttal", "Concluding"]
+    # predictions = ["Lead", "Lead", "Evidence", "Claim", "Claim", "Counterclaim", "Counterclaim", "Rebuttal", "Rebuttal", "Concluding"]
 
     colored_text = " ".join(
         [

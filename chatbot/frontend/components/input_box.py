@@ -1,28 +1,24 @@
 import streamlit as st
 
+from backend.services.extractor import extract_text_from_file
+
 
 def get_input_section():
     col1, col2 = st.columns(2)
     with col1:
         uploaded_file = st.file_uploader(
-            "Upload your essay file (e.g., .txt, .md)",
-            type=["txt", "md"],
-            help="Upload a text-based essay file.",
+            "Upload your essay file (e.g., .txt, .jpeg, .jpg, .png, .pdf)",
+            type=["txt", "pdf", "jpeg", "jpg", "png"],
+            help="Upload a essay file.",
             key="file_uploader",
         )
         if uploaded_file is not None:
-            # Simulate file conversion to text
-            # In a real app:
-            # if uploaded_file.type == "application/pdf":
-            #     text = extract_text_from_pdf(uploaded_file)
-            # elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-            #     text = extract_text_from_docx(uploaded_file)
-            # else:
-            text = uploaded_file.read().decode("utf-8")
+            with st.spinner("Extracting text...", show_time=True):
+                text = extract_text_from_file(uploaded_file)
             st.session_state.essay_text = text
             st.session_state.chat_enabled = True
             st.session_state.chat_history.append(
-                {"role": "user", "content": f"Here is my essay:\n\n{text}"}
+                {"role": "user", "content": f"Here is the essay:\n\n{text}"}
             )
             st.rerun()
 
@@ -37,6 +33,6 @@ def get_input_section():
             st.session_state.essay_text = pasted_text
             st.session_state.chat_enabled = True
             st.session_state.chat_history.append(
-                {"role": "user", "content": f"Here is my essay:\n\n{pasted_text}"}
+                {"role": "user", "content": f"Here is the essay:\n\n{pasted_text}"}
             )
             st.rerun()

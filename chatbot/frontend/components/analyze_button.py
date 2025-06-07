@@ -6,8 +6,8 @@ from backend.services.analyze import analyze_essay
 
 def click_analyze_button():
     if st.session_state.get("analyzed_text", None) is None:
-        with st.chat_message("assistant"):
-            with st.spinner("Segmenting..."):
+        with st.container(key="seg_spinner"):
+            with st.spinner("Segmenting...", show_time=True):
                 analyzed_text = analyze_essay(st.session_state.essay_text)
                 st.session_state.analyzed_text = analyzed_text
 

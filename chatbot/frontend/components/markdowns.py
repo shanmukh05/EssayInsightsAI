@@ -27,6 +27,9 @@ def get_css_style():
             min-width: 320px;
             max-width: 320px;
         }
+        [data-testid="stFileUploaderDropzone"]{
+            height: 133px;
+        }
         </style>
         """,
         unsafe_allow_html=True,
@@ -114,6 +117,12 @@ def style_seg_button():
         .st-key-seg_button .stButton button:active {
             transform: translateY(0);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .st-key-seg_spinner .stSpinner {
+            position: fixed;
+            bottom: 115px;
+            left: 400px;
         }
         </style>
         """,

@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 
 
 from components.markdowns import get_css_style, get_intro_html, get_details_html
-from components.sidepanel import get_sidepanel
+from chatbot.frontend.components.side_panel import get_sidepanel
 from components.input_box import get_input_section
 from chatbot.frontend.components.analyze_button import get_analyze_button
 

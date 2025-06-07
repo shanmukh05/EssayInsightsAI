@@ -14,6 +14,7 @@ def get_sidepanel():
                 st.session_state.chat_history = []
                 st.session_state.essay_text = ""
                 st.session_state.chat_enabled = False
+                st.session_state.analyzed_text = None
                 st.rerun()
 
         st.title("Settings")
