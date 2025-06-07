@@ -1,18 +1,22 @@
 import streamlit as st
 import os
 import torch
+import requests
+import json
 
 torch.classes.__path__ = []
 import sys
 
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 
-from components.markdowns import get_css_style, get_intro_html, get_details_html
-from chatbot.frontend.components.side_panel import get_sidepanel
-from components.input_box import get_input_section
+from chatbot.frontend.components.markdowns import (
+    get_css_style,
+    get_intro_html,
+    get_details_html,
+)
+from chatbot.frontend.components.side_panel import get_side_panel
+from chatbot.frontend.components.input_box import get_input_section
 from chatbot.frontend.components.analyze_button import get_analyze_button
 
 # --- Streamlit Page Configuration ---
@@ -35,7 +39,7 @@ if "chat_enabled" not in st.session_state:
     st.session_state.chat_enabled = False
 
 # --- Sidepanel ---
-get_sidepanel()
+openai_api_key, selected_model = get_side_panel()
 
 # --- Main Content Area ---
 if not st.session_state.chat_enabled:
@@ -77,33 +81,33 @@ if st.session_state.chat_enabled:
         # Add user query to chat history
         st.session_state.chat_history.append({"role": "user", "content": user_query})
 
-        # Display user message immediately (will be right-aligned by CSS)
+        # Display user message immediately
         with st.chat_message("user"):
             st.write(user_query)
 
         # Simulate bot response
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
-                # import openai
-                # openai.api_key = openai_api_key
-                # try:
-                #     response = openai.chat.completions.create(
-                #         model=selected_model,
-                #         messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.chat_history],
-                #         max_tokens=500
-                #     )
-                #     bot_response = response.choices[0].message.content
-                # except Exception as e:
-                #     bot_response = f"Error communicating with OpenAI: {e}"
+                print(selected_model, openai_api_key)
+                request = requests.post(
+                    url="http://127.0.0.1:8000/chat",
+                    data=json.dumps(
+                        {
+                            "chat_history": st.session_state.chat_history,
+                            "user_query": user_query,
+                            "essay_text": st.session_state.essay_text,
+                            "essay_analysis": st.session_state.get(
+                                "analyzed_predictions", "Analysis"
+                            ),
+                            "model": selected_model,
+                            "openai_key": openai_api_key,
+                        }
+                    ),
+                )
 
-                # For demonstration, a simple mock response:
-                if "feedback" in user_query.lower():
-                    bot_response = "I can provide feedback on your essay's structure, clarity, and arguments. What specific aspect would you like me to focus on?"
-                elif "summary" in user_query.lower():
-                    bot_response = "To summarize your essay, I would highlight the main thesis and key supporting points. Would you like me to proceed with that?"
-                else:
-                    bot_response = "Thank you for your question! I'm ready to help you with your essay. What would you like to discuss next?"
-
+                bot_response = request.json().get(
+                    "chat_reply", "Sorry, I couldn't process your request."
+                )
                 st.write(bot_response)
                 st.session_state.chat_history.append(
                     {"role": "assistant", "content": bot_response}

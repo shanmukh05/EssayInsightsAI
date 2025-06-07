@@ -1,7 +1,7 @@
 import streamlit as st
 
 
-def get_sidepanel():
+def get_side_panel():
     with st.sidebar:
         st.image(
             r"D:\Learning\NLP\Projects\EssayInsightsAI\chatbot\frontend\assets\logo.png",
@@ -42,3 +42,5 @@ def get_sidepanel():
             key="model_selection",
         )
         st.info(f"Selected Model: {selected_model}")
+
+    return openai_api_key, selected_model

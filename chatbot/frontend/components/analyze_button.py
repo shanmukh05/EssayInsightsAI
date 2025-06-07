@@ -1,18 +1,23 @@
 import streamlit as st
 
-from components.markdowns import style_seg_button
-from backend.services.analyze import analyze_essay
+from chatbot.frontend.components.markdowns import style_seg_button
+from chatbot.backend.services.analyze import analyze_essay
 
 
 def click_analyze_button():
     if st.session_state.get("analyzed_text", None) is None:
         with st.container(key="seg_spinner"):
             with st.spinner("Segmenting...", show_time=True):
-                analyzed_text = analyze_essay(st.session_state.essay_text)
+                analyzed_text, predictions = analyze_essay(st.session_state.essay_text)
                 st.session_state.analyzed_text = analyzed_text
+                st.session_state.analyzed_predictions = " ".join(predictions)
 
     st.session_state.chat_history.append(
-        {"role": "analyzer", "content": st.session_state.analyzed_text}
+        {
+            "role": "analyzer",
+            "content": st.session_state.analyzed_text,
+            "predictions": st.session_state.analyzed_predictions,
+        }
     )
 
 

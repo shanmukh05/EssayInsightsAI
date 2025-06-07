@@ -85,4 +85,4 @@ def analyze_essay(input_text):
 
     final_text = legend_html + "<h4> Segmented Essay: </h4>" + f"<p>{colored_text}</p>"
 
-    return final_text
+    return final_text, predictions

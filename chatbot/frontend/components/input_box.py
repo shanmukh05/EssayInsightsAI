@@ -1,6 +1,6 @@
 import streamlit as st
 
-from backend.services.extractor import extract_text_from_file
+from chatbot.backend.services.extractor import extract_text_from_file
 
 
 def get_input_section():
