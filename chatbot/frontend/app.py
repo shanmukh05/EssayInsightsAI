@@ -19,7 +19,7 @@ from chatbot.frontend.components.analyze_button import get_analyze_button
 st.set_page_config(
     page_title="Essay Assistant",
     page_icon="✍️",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="expanded",
 )
 
@@ -52,7 +52,7 @@ if not st.session_state.chat_enabled:
 # --- Chat Interface ---
 if st.session_state.chat_enabled:
     st.markdown(
-        "<h1 style='position:fixed; top:30px; left:350px;'> 🤖 EssayBot</h1>",
+        "<h1 style='position:fixed; top:30px; left:400px;'> 🤖 EssayBot</h1>",
         unsafe_allow_html=True,
     )
 

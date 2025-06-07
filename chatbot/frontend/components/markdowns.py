@@ -23,6 +23,10 @@ def get_css_style():
         .st-emotion-cache-4oy321 { 
             border-style: none;
         }
+        .stSidebar {
+            min-width: 320px;
+            max-width: 320px;
+        }
         </style>
         """,
         unsafe_allow_html=True,
@@ -99,6 +103,7 @@ def style_seg_button():
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             position: fixed;
             bottom: 115px;
+            right: 80px;
         }
 
         .st-key-seg_button .stButton button:hover {

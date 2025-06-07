@@ -3,6 +3,7 @@ analyzer/output/
 analyzer/models/
 analyzer/__pycache__/
 chatbot/backend/logs/
+chatbot/logs/
 chatbot/*/*/__pycache__/
 chatbot/*/__pycache__/
 chatbot/__pycache__/
