@@ -4,7 +4,7 @@ import streamlit as st
 def get_side_panel():
     with st.sidebar:
         st.image(
-            r"https://github.com/shanmukh05/EssayInsightsAI/blob/main/chatbot/frontend/assets/logo.png",
+            "https://raw.githubusercontent.com/shanmukh05/EssayInsightsAI/main/chatbot/frontend/assets/logo.png",
             use_container_width=True,
         )
 
