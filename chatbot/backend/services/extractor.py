@@ -3,6 +3,7 @@ from pathlib import Path
 from PIL import Image
 import easyocr
 import pymupdf
+from huggingface_hub import hf_hub_download
 
 
 def extract_text_from_file(uploaded_file):
@@ -34,7 +35,25 @@ def extract_text_from_pdf(uploaded_file):
 
 
 def extract_text_from_image(uploaded_file):
-    reader = easyocr.Reader(["en"])
+    hf_hub_download(
+        repo_id="aine05/EssayInsightsAI-DistilBERT",
+        filename="ocr_models/craft_mlt_25k.pth",
+        repo_type="model",
+        local_dir="./",
+    )
+
+    hf_hub_download(
+        repo_id="aine05/EssayInsightsAI-DistilBERT",
+        filename="ocr_models/english_g2.pth",
+        repo_type="model",
+        local_dir="./",
+    )
+    reader = easyocr.Reader(
+        ["en"],
+        gpu=False,
+        model_storage_directory="./ocr_models",
+        download_enabled=False,
+    )
     image = Image.open(uploaded_file)
     image = np.array(image)
     results = reader.readtext(image, detail=0)

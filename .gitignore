@@ -7,3 +7,4 @@ chatbot/logs/
 chatbot/*/*/__pycache__/
 chatbot/*/__pycache__/
 chatbot/__pycache__/
+chatbot/test_data/easyocr/
