@@ -88,7 +88,6 @@ if st.session_state.chat_enabled:
         # Simulate bot response
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
-                print(selected_model, openai_api_key)
                 request = requests.post(
                     url="http://127.0.0.1:8000/chat",
                     data=json.dumps(

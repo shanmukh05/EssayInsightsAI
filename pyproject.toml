@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "EssayInsightsAI"
+version = "1.0.0"
+description = "A Python package for analyzing essays using OpenAI's ChatGPT API and a Essay Segmentation model. It provides insights into essay structure, content, and style, helping users improve their writing skills."
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    { name = "Shanmukha Sainath", email = "venkatashanmukhasainathg@gmail.com" }
+]
+keywords = ["Chatbot", "LLM", "OpenAI", "ChatGPT", "Essay Analysis"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/shanmukh05/EssayInsightsAI"
+"Bug Tracker" = "https://github.com/shanmukh05/EssayInsightsAI/issues"
+"Documentation" = "https://shanmukh05.github.io/EssayInsightsAI/"
+"Source Code" = "https://github.com/shanmukh05/EssayInsightsAI"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
