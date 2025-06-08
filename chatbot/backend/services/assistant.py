@@ -53,4 +53,6 @@ def generate_chat_reply(
         temperature=0.7,
     )
 
+    print(response)
+
     return response.choices[0].message.content.strip()

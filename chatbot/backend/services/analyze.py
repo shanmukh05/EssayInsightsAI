@@ -38,13 +38,6 @@ config_dict = {
     },
 }
 
-ckpt_path = hf_hub_download(
-    repo_id="aine05/EssayInsightsAI-DistilBERT",
-    filename="train_val/lightning_logs/version_0/checkpoints/epoch=4-step=1100.ckpt",
-    repo_type="model",
-)
-
-
 color_map = {
     "Claim": "red",
     "Evidence": "green",
@@ -63,11 +56,17 @@ legend_html += "</ul>"
 
 
 def analyze_essay(input_text):
+    ckpt_path = hf_hub_download(
+        repo_id="aine05/EssayInsightsAI-DistilBERT",
+        filename="train_val/lightning_logs/version_0/checkpoints/epoch=4-step=1100.ckpt",
+        repo_type="model",
+    )
+    
     data, network, trainer = load_saved_model(
         config_dict,
         [label2id, id2label, num_classes],
         ckpt_path,
-        r"logs",
+        "logs",
     )
     df = pd.DataFrame.from_dict({"id": ["UserInput"], "text": [input_text]})
     data_loader = data.test_dataloader(df)
