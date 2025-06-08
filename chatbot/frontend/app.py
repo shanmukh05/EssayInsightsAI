@@ -1,12 +1,9 @@
 import streamlit as st
 import os
 import torch
-import requests
-import json
-
-torch.classes.__path__ = []
 import sys
 
+torch.classes.__path__ = []
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 
@@ -18,6 +15,7 @@ from chatbot.frontend.components.markdowns import (
 from chatbot.frontend.components.side_panel import get_side_panel
 from chatbot.frontend.components.input_box import get_input_section
 from chatbot.frontend.components.analyze_button import get_analyze_button
+from chatbot.backend.services.assistant import generate_chat_reply
 
 # --- Streamlit Page Configuration ---
 st.set_page_config(
@@ -88,25 +86,17 @@ if st.session_state.chat_enabled:
         # Simulate bot response
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
-                request = requests.post(
-                    url="http://127.0.0.1:8000/chat",
-                    data=json.dumps(
-                        {
-                            "chat_history": st.session_state.chat_history,
-                            "user_query": user_query,
-                            "essay_text": st.session_state.essay_text,
-                            "essay_analysis": st.session_state.get(
-                                "analyzed_predictions", "Analysis"
-                            ),
-                            "model": selected_model,
-                            "openai_key": openai_api_key,
-                        }
+                bot_response = generate_chat_reply(
+                    user_query=user_query,
+                    essay_text=st.session_state.essay_text,
+                    essay_analysis=st.session_state.get(
+                        "analyzed_predictions", "Analysis Not Present"
                     ),
+                    chat_history=st.session_state.chat_history,
+                    model=selected_model,
+                    openai_key=openai_api_key,
                 )
 
-                bot_response = request.json().get(
-                    "chat_reply", "Sorry, I couldn't process your request."
-                )
                 st.write(bot_response)
                 st.session_state.chat_history.append(
                     {"role": "assistant", "content": bot_response}
