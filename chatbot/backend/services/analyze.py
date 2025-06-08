@@ -1,4 +1,5 @@
 import pandas as pd
+from huggingface_hub import hf_hub_download
 
 from analyzer.train import load_saved_model
 from analyzer.infer import inference
@@ -25,8 +26,8 @@ id2label = {v: k for k, v in label2id.items()}
 
 config_dict = {
     "paths": {
-        "tokenizer": r"D:\Learning\NLP\Projects\EssayInsightsAI\analyzer\models\distilbert-base-uncased",
-        "model": r"D:\Learning\NLP\Projects\EssayInsightsAI\analyzer\models\distilbert-base-uncased",
+        "tokenizer": "distilbert/distilbert-base-uncased",
+        "model": "distilbert/distilbert-base-uncased",
     },
     "data": {"max_len": 512, "strategy": "train_val"},
     "test_ds": {
@@ -36,7 +37,12 @@ config_dict = {
         "pin_memory": False,
     },
 }
-ckpt_path = r"D:\Learning\NLP\Projects\EssayInsightsAI\analyzer\output\distilbert-base-uncased\train_val\lightning_logs\version_0\checkpoints\epoch=4-step=1100.ckpt"
+
+ckpt_path = hf_hub_download(
+    repo_id="aine05/EssayInsightsAI-DistilBERT",
+    filename="train_val/lightning_logs/version_0/checkpoints/epoch=4-step=1100.ckpt",
+    repo_type="model",
+)
 
 
 color_map = {
@@ -61,7 +67,7 @@ def analyze_essay(input_text):
         config_dict,
         [label2id, id2label, num_classes],
         ckpt_path,
-        r"D:\Learning\NLP\Projects\EssayInsightsAI\chatbot\backend\logs",
+        r"logs",
     )
     df = pd.DataFrame.from_dict({"id": ["UserInput"], "text": [input_text]})
     data_loader = data.test_dataloader(df)
