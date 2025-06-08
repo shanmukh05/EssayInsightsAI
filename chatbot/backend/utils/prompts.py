@@ -105,7 +105,20 @@ Provide your grammar and style feedback:
 )
 
 
-analysis_keywords = ["analyze", "break down", "dissect", "explain", "feedback", "evidence", "claim", "lead", "position", "counterclaim", "rebuttal", "concluding statement"]
+analysis_keywords = [
+    "analyze",
+    "break down",
+    "dissect",
+    "explain",
+    "feedback",
+    "evidence",
+    "claim",
+    "lead",
+    "position",
+    "counterclaim",
+    "rebuttal",
+    "concluding statement",
+]
 grammar_keywords = ["grammar", "style", "mechanics", "clarity", "structure", "rectify"]
 
 

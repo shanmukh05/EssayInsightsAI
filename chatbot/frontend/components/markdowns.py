@@ -53,6 +53,15 @@ def get_details_html():
     st.markdown("\n\n")
     st.markdown(
         """
+            ### 👤 About Me
+            I am Shanmukha Sainath, working as AI Engineer at KLA Corporation. I have done my Bachelors from Department of Electronics and Electrical Communication Engineering department with Minor in Computer Science Engineering and Micro in Artificial Intelligence and Applications from IIT Kharagpur.
+
+            - Check my [ML Roadmap](https://github.com/shanmukh05/Machine-Learning-Roadmap) if you're interested to get into the field of ML
+            - Check my [ScratchNLP](https://github.com/shanmukh05/scratch_nlp) Python library for understanding NLP algorithms implementation from scratch
+            - [Connect with me](https://linktr.ee/shanmukh05) if you have any feedback or questions.
+
+            ---
+
             ### 🎯 What is EssayInsightsAI?
 
             EssayInsightAI is an intelligent web app that helps students and writers improve their essays by:
@@ -77,7 +86,7 @@ def get_details_html():
 
             ---
 
-            ### 🚀 Why Use EssayInsightAI?
+            ### 🚀 Why Use EssayInsightsAI?
 
             ✅ Powered by state-of-the-art NLP & LLMs  
             ✅ Designed for student writing improvement  

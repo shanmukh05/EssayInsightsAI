@@ -61,7 +61,7 @@ def analyze_essay(input_text):
         filename="train_val/lightning_logs/version_0/checkpoints/epoch=4-step=1100.ckpt",
         repo_type="model",
     )
-    
+
     data, network, trainer = load_saved_model(
         config_dict,
         [label2id, id2label, num_classes],
