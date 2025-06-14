@@ -1,2 +1,9 @@
 [global]
 showWarningOnDirectExecution = false
+
+[theme]
+primaryColor = "#4E79A7"
+backgroundColor = "#F7F7F7"
+secondaryBackgroundColor = "#E1E8ED"
+textColor = "#1C1C1C"
+font = "sans serif"

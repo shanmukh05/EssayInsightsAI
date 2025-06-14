@@ -1,4 +1,5 @@
-![Logo](https://raw.githubusercontent.com/shanmukh05/EssayInsightsAI/main/chatbot/frontend/assets/logo.png)
+<img src="https://raw.githubusercontent.com/shanmukh05/EssayInsightsAI/main/chatbot/frontend/assets/logo.png" width="300">
+
 
 # EssayInsightsAI 📝
 

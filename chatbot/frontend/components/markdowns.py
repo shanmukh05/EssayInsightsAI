@@ -41,10 +41,10 @@ def get_intro_html():
         """
         # 📝 Welcome to **EssayInsightsAI**
 
-        #### Your AI powered Virtual Writing Tutor for writing smarter essays.
+        ##### Your AI powered Virtual Writing Tutor for writing smarter essays.
 
+        ⬇️ Scroll down to learn more about how to use this app and it's functionalities.
         ### 📥 Try It Now
-
     """
     )
 
@@ -53,15 +53,6 @@ def get_details_html():
     st.markdown("\n\n")
     st.markdown(
         """
-            ### 👤 About Me
-            I am Shanmukha Sainath, working as AI Engineer at KLA Corporation. I have done my Bachelors from Department of Electronics and Electrical Communication Engineering department with Minor in Computer Science Engineering and Micro in Artificial Intelligence and Applications from IIT Kharagpur.
-
-            - Check my [ML Roadmap](https://github.com/shanmukh05/Machine-Learning-Roadmap) if you're interested to get into the field of ML
-            - Check my [ScratchNLP](https://github.com/shanmukh05/scratch_nlp) Python library for understanding NLP algorithms implementation from scratch
-            - [Connect with me](https://linktr.ee/shanmukh05) if you have any feedback or questions.
-
-            ---
-
             ### 🎯 What is EssayInsightsAI?
 
             EssayInsightAI is an intelligent web app that helps students and writers improve their essays by:
@@ -86,12 +77,41 @@ def get_details_html():
 
             ---
 
+            ### 📚 How to Use EssayInsightsAI?
+
+            1. **Start a New Session**: Click the "New Chat" button present in the side panel to begin a new analysis session.
+            2. **Select Your Model**: Choose the appropriate model in the side panel for your essay analysis. The default is set to `gpt-4o`, which is optimized for conversational tasks and essay analysis.
+            3. **Enter Your OpenAI API Key**: Input your OpenAI API key in the side panel to enable the AI functionalities. If you don't have one, you can sign up at [OpenAI API](https://openai.com/index/openai-api/).
+            4. **Give your Essay**: You can either paste your essay text directly or upload a file.
+            5. **Segmentation**: Click the "Segmentation" button to break down your essay into its following key components:
+                - `Claim`: The main argument or thesis of your essay.
+                - `Evidence`: Supporting facts, data, or examples that back up your claim.
+                - `Lead`: The introduction or opening statement that sets the context for your essay.
+                - `Position`: The stance or viewpoint you are taking in your essay.
+                - `Counterclaim`: An opposing argument or viewpoint that you address in your essay.
+                - `Rebuttal`: Your response to the counterclaim, defending your original position.
+                - `Concluding Statement`: The final summary or closing argument that wraps up your essay.
+                - `None`: If the segment does not fit into any of the above categories, it will be labeled as "None".
+            6. **Chat with AI**: Ask questions about your essay, request feedback, or seek clarification on specific points.
+            7. **Review Feedback**: Read the AI's suggestions and apply them to improve your essay.
+
+            ---
+
             ### 🚀 Why Use EssayInsightsAI?
 
             ✅ Powered by state-of-the-art NLP & LLMs  
             ✅ Designed for student writing improvement  
             ✅ Easy-to-use interface with real-time results  
             ✅ Free and accessible—just paste your essay and go!
+
+            ---
+
+            ### 🙋🏻‍♂️ About Me
+            I am Shanmukha Sainath, working as AI Engineer at KLA Corporation. I have done my Bachelors from Department of Electronics and Electrical Communication Engineering department with Minor in Computer Science Engineering and Micro in Artificial Intelligence and Applications from IIT Kharagpur.
+
+            - Check my [ML Roadmap](https://github.com/shanmukh05/Machine-Learning-Roadmap) if you're interested to get into the field of ML
+            - Check my [ScratchNLP](https://github.com/shanmukh05/scratch_nlp) Python library for understanding NLP algorithms implementation from scratch
+            - [Connect with me](https://linktr.ee/shanmukh05) if you have any feedback or questions.
 
             ---
         """

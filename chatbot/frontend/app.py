@@ -86,18 +86,23 @@ if st.session_state.chat_enabled:
         # Simulate bot response
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
-                bot_response = generate_chat_reply(
-                    user_query=user_query,
-                    essay_text=st.session_state.essay_text,
-                    essay_analysis=st.session_state.get(
-                        "analyzed_predictions", "Analysis Not Present"
-                    ),
-                    chat_history=st.session_state.chat_history,
-                    model=selected_model,
-                    openai_key=openai_api_key,
-                )
+                if openai_api_key is None or openai_api_key == "":
+                    st.error(
+                        "Please enter your OpenAI API key in the side panel to enable chat functionality."
+                    )
+                else:
+                    bot_response = generate_chat_reply(
+                        user_query=user_query,
+                        essay_text=st.session_state.essay_text,
+                        essay_analysis=st.session_state.get(
+                            "analyzed_predictions", "Analysis Not Present"
+                        ),
+                        chat_history=st.session_state.chat_history,
+                        model=selected_model,
+                        openai_key=openai_api_key,
+                    )
 
-                st.write(bot_response)
-                st.session_state.chat_history.append(
-                    {"role": "assistant", "content": bot_response}
-                )
+                    st.write(bot_response)
+                    st.session_state.chat_history.append(
+                        {"role": "assistant", "content": bot_response}
+                    )
