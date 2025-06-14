@@ -50,7 +50,7 @@ Whether you're preparing for an exam or polishing an academic submission, EssayI
 
 ### Analyzer
 - Download the dataset from [Feedback Prize - Evaluating Student Writing](https://www.kaggle.com/competitions/feedback-prize-2021) and place it in the `data` folder.
-- A config file template `config.yaml` is provided in the `analyzer\configs` folder. You can modify it according to your requirements.
+- A config file template `template.yaml` is provided in the `analyzer\configs` folder. You can modify it according to your requirements. 
 - To train the model, run the following command:
   ```bash
   python analyzer/main.py -C <config file> -O <output folder> -T "Train"
@@ -83,11 +83,15 @@ Whether you're preparing for an exam or polishing an academic submission, EssayI
 - #### Data Loading
     - The `analyzer\dataset.py` file contains the `FeedbackPrizeDataset` class that handles the loading of the dataset. It uses the `label2id.json` file to map the labels to their corresponding IDs.
     - A PyTorch Lightning Data Module (`FeedbackPrizeDataModule`) is created to handle the data loading and batching.
+    - Three data splitting strategies were implemented: 
+        - **K-Fold Cross Validation**: The dataset is split into `k` folds for cross-validation.
+        - **Stratified K-Fold**: The dataset is split into `k` folds while maintaining the distribution of labels in each fold.
+        - **Train Val**: The dataset is split into training and validation sets randomly.
 
 - #### Model architecture
     - The model architecutre is illustrated below: 
     <img src="https://raw.githubusercontent.com/shanmukh05/EssayInsightsAI/main/analyzer/report/images/architecture.png">
-    - Following pre-trained models were tested 
+    - Following pre-trained models were tested:
         - `FacebookAI\roberta-large`
         - `google-bert\bert-large-uncased`
         - `microsoft\deberta-v3-large`
@@ -96,6 +100,7 @@ Whether you're preparing for an exam or polishing an academic submission, EssayI
         - `funnel-transformer\xlarge`
         - `FacebookAI\xlm-roberta-large`
     - Top encoder layers were frozen to reduce the training time and memory usage.
+    - Configs for the above models are provided in the `analyzer\configs` folder.
 - #### Model training
     - I used JarvisLabs.AI's A5000 GPU with 24GB VRAM for all the training.
     - All the models are trained using AdamW optimizer with a initial learning rate of `2e-6` and CosineAnnealingLR scheduler. 

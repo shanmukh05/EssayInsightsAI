@@ -1,0 +1,29 @@
+paths:
+  data: <path to data folder>
+  tokenizer: <Huggingface tokenizer string or path>
+  model: <Huggingface model string or path>
+seed: Set seed
+data:
+  max_len: Sequence length
+  strategy: Type of training strategy [train_val, kfold, stratifiedkfold]
+  val_split: Validation Split for finetuning if vtrain_val strategy
+  num_folds: Number of folds if kfold or stratifiedkfold strategy
+train_ds:
+  batch_size: Batch size
+  shuffle: Boolen to shuffle or not
+  num_workers: Number of workers
+  pin_memory: Boolen to pin_memory or not
+test_ds:
+  batch_size: Batch size
+  shuffle: Boolen to shuffle or not
+  num_workers: Number of workers
+  pin_memory: Boolen to pin_memory or not
+model:
+training:
+  lr: Learning rate
+  epochs: Training epochs
+postprocess:
+  models:
+    - List of Checkpoints to finetuned models for post-processing
+  operations:
+    - List of Postprocessing operations [soft_ensemble, hard_ensemble, bound_average, repair_spans]
