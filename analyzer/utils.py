@@ -10,7 +10,7 @@ from tqdm import tqdm
 def preprocess_labels(label_df, essay_df, datapath):
     annot_path = os.path.join(datapath, "train_essays_annotated.csv")
     if os.path.exists(annot_path):
-        essay_df = pd.read_csv(annot_path).iloc[:50]
+        essay_df = pd.read_csv(annot_path)
     else:
         predictions = []
         for _, row in tqdm(essay_df.iterrows()):
