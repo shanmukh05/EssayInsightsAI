@@ -1,4 +1,8 @@
-<img src="https://raw.githubusercontent.com/shanmukh05/EssayInsightsAI/main/chatbot/frontend/assets/logo.png" width="300">
+<div align="center">
+<img src="https://raw.githubusercontent.com/shanmukh05/EssayInsightsAI/main/chatbot/frontend/assets/logo.png" width="400">
+
+### Your AI powered Virtual Writing Tutor for writing smarter essays.
+</div>
 
 
 # EssayInsightsAI 📝
