@@ -91,6 +91,7 @@ Whether you're preparing for an exam or polishing an academic submission, EssayI
 - #### Model architecture
     - The model architecutre is illustrated below: 
     <img src="https://raw.githubusercontent.com/shanmukh05/EssayInsightsAI/main/analyzer/report/images/architecture.png">
+    
     - Following pre-trained models were tested:
         - `FacebookAI\roberta-large`
         - `google-bert\bert-large-uncased`
