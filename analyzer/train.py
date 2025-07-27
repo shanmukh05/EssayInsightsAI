@@ -35,6 +35,7 @@ def train_model(essay_df, config, label_info, output_folder):
             network = FeebackPrizeNetwork(model, config, num_classes)
 
             trainer = pl.Trainer(
+                min_epochs=config["training"]["epochs"],
                 max_epochs=config["training"]["epochs"],
                 accelerator="auto",
                 devices=1,

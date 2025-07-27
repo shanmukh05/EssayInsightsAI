@@ -3,6 +3,9 @@ import glob
 import json
 import argparse
 import pandas as pd
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from analyzer.utils import load_config, get_logger, preprocess_labels, prepare_test_data
 from analyzer.train import train_model, load_saved_model, load_saved_models

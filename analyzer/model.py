@@ -4,8 +4,9 @@ import torch.nn as nn
 import torchmetrics
 import pytorch_lightning as pl
 from transformers import AutoConfig, AutoModel
-from torch.optim.lr_scheduler import CosineAnnealingLR
+from torch.optim.lr_scheduler import CosineAnnealingLR, MultiStepLR
 from lightning.pytorch.callbacks.early_stopping import EarlyStopping
+from lightning.pytorch.callbacks import ModelCheckpoint
 
 
 class FeebackPrizeNetwork(pl.LightningModule):
@@ -74,17 +75,25 @@ class FeebackPrizeNetwork(pl.LightningModule):
 
     def configure_optimizers(self):
         optim = torch.optim.AdamW(
-            self.model.parameters(), lr=self.config["training"]["lr"]
+            self.model.parameters(), lr=self.config["training"]["lr"], weight_decay=0.01
         )
 
-        scheduler = CosineAnnealingLR(optim, T_max=10, eta_min=1e-5)
+        # scheduler = CosineAnnealingLR(optim, T_max=10, eta_min=1e-7)
+        scheduler = MultiStepLR(optim, milestones=[2, 4, 6, 8], gamma=0.2)
 
         return {"optimizer": optim, "lr_scheduler": scheduler}
 
     def configure_callbacks(self):
         early_stop = EarlyStopping(monitor="val_loss", mode="min", patience=3)
+        model_ckpt = ModelCheckpoint(
+            monitor="val_loss",
+            mode="min",
+            save_top_k=1,
+            filename="best_model_{epoch:02d}-{val_loss:.3f}",
+            save_weights_only=True,
+        )
 
-        return [early_stop]
+        return [early_stop, model_ckpt]
 
     def calc_acc(self, labels, logits, acc_fn):
         labels = labels.view(-1)
@@ -108,29 +117,23 @@ class FeedbackModel(nn.Module):
             config, num_classes, label2id, id2label
         )
         self._freeze_layers()
+        self.num_classes = num_classes
 
         self.dropout1 = nn.Dropout(0.3)
 
         input_size = config_backbone.hidden_size
-        hidden_size = config_backbone.hidden_size // 2
-        self.bilstm = nn.LSTM(
-            input_size=input_size,
-            hidden_size=hidden_size,
-            num_layers=1,
-            batch_first=True,
-            bidirectional=True,
-        )
 
-        self.dropout2 = nn.Dropout(0.3)
-        self.classifier = nn.Linear(hidden_size * 2, num_classes)
+        self.classifier = nn.Sequential(
+            nn.Linear(input_size, input_size // 2),
+            nn.ReLU(),
+            nn.Linear(input_size // 2, num_classes),
+        )
 
     def forward(self, input_ids, attention_mask, labels=None):
         pretrain_output = self.backbone(input_ids, attention_mask=attention_mask)
         embeds = pretrain_output.last_hidden_state
 
         output = self.dropout1(embeds)
-        output, _ = self.bilstm(output)
-        output = self.dropout2(output)
         preds = self.classifier(output)
 
         logits = torch.softmax(preds, dim=-1)
@@ -141,15 +144,16 @@ class FeedbackModel(nn.Module):
             return logits
 
     def get_loss(self, outputs, targets, attention_mask):
+        outputs = outputs.view(-1, self.num_classes)
+        targets = targets.view(-1)
+        attention_mask = attention_mask.view(-1)
+
+        mask = attention_mask != 0
+        outputs = outputs[mask]
+        targets = targets[mask]
+
         loss_fn = nn.CrossEntropyLoss()
-        active_logits = outputs.reshape(-1, outputs.shape[-1])
-        true_labels = targets.reshape(-1)
-
-        idxs = attention_mask.reshape(-1) == 1
-        active_logits = active_logits[idxs]
-        true_labels = true_labels[idxs].to(torch.long)
-
-        loss = loss_fn(active_logits, true_labels)
+        loss = loss_fn(outputs, targets)
 
         return loss
 
@@ -188,4 +192,4 @@ class FeedbackModel(nn.Module):
             return
         else:
             self.backbone.embeddings.requires_grad_(False)
-            self.backbone.encoder.layer[:12].requires_grad_(False)
+            self.backbone.encoder.layer[:20].requires_grad_(False)
