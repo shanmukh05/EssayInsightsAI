@@ -92,13 +92,11 @@ Whether you're preparing for an exam or polishing an academic submission, EssayI
     - The model architecutre is illustrated below: 
     <img src="https://raw.githubusercontent.com/shanmukh05/EssayInsightsAI/main/analyzer/report/images/architecture.png">
     
-    - Following pre-trained models were tested:
-        - `FacebookAI\roberta-large`
-        - `google-bert\bert-large-uncased`
+    - We used `google-bert\bert-large-uncased` from HuggingFace for all the experiments
     - Top encoder layers were frozen to reduce the training time and memory usage.
     - Configs for the above models are provided in the `analyzer\configs` folder.
 - #### Model training
-    - I used JarvisLabs.AI's A5000 GPU with 24GB VRAM for all the training.
+    - I used JarvisLabs.AI's RTX6000Ada GPU with 24GB VRAM for all the training.
     - All the models are trained using AdamW optimizer with a initial learning rate of `2e-6` and CosineAnnealingLR scheduler. 
     - Pretrained model specific hyperparameters can be found in the [report]().
 - #### Postprocessing

@@ -152,7 +152,14 @@ class FeedbackModel(nn.Module):
         outputs = outputs[mask]
         targets = targets[mask]
 
-        loss_fn = nn.CrossEntropyLoss()
+        class_weights = torch.tensor([
+                                    0.8437, 2.3403, 2.3403, 1.4067, 1.4067, 
+                                    0.4579, 0.4579, 0.4213, 0.4213,
+                                    1.5593, 1.5593, 3.8318, 3.8318,
+                                    4.6806, 4.6806
+                                    ])
+
+        loss_fn = nn.CrossEntropyLoss(weight=class_weights.to(outputs.device))
         loss = loss_fn(outputs, targets)
 
         return loss

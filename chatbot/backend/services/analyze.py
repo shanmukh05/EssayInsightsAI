@@ -58,7 +58,7 @@ legend_html += "</ul>"
 def analyze_essay(input_text):
     ckpt_path = hf_hub_download(
         repo_id="aine05/EssayInsightsAI-DistilBERT",
-        filename="train_val/lightning_logs/version_0/checkpoints/epoch=4-step=1100.ckpt",
+        filename="analyzer_models/distilbert_base_uncased_checkpoint.ckpt",
         repo_type="model",
     )
 

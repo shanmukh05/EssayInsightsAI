@@ -9,12 +9,12 @@ data:
   strategy: kfold # kfold stratifiedkfold
   num_folds: 5
 train_ds:
-  batch_size: 8
+  batch_size: 16
   shuffle: True
   num_workers: 5
   pin_memory: True
 test_ds:
-  batch_size: 8
+  batch_size: 16
   shuffle: False
   num_workers: 5
   pin_memory: True
