@@ -98,7 +98,6 @@ Whether you're preparing for an exam or polishing an academic submission, EssayI
 - #### Model training
     - I used JarvisLabs.AI's RTX6000Ada GPU with 24GB VRAM for all the training.
     - All the models are trained using AdamW optimizer with a initial learning rate of `2e-6` and CosineAnnealingLR scheduler. 
-    - Pretrained model specific hyperparameters can be found in the [report]().
 - #### Postprocessing
     - Finetuned model results can be further improved by following postprocessing steps:
         - **Soft Voting**: Multiple finetuned models softmax probabilities are averaged for all tokens.
