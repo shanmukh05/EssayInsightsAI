@@ -12,7 +12,7 @@
 ## Analyzer 👨🏽‍🏫
 This section of the project contains my approach to the kaggle competition [Feedback Prize - Evaluating Student Writing](https://www.kaggle.com/competitions/feedback-prize-2021). The goal of this competition is to predict the feedback that a student would receive on their essay. The dataset contains argumentative essays written by U.S students in grades 6-12. The essays were annotated by expert raters for elements commonly found in argumentative writing. The task was to segment each essay into discrete rhetorical and argumentative elements (i.e., discourse elements) and then classify each element into one of the following categories: `Claim`, `Evidence`, `Lead`, `Position`, `Counterclaim`, `Rebuttal`, and `Concluding Statement`. Please check [Feedback Prize - Evaluating Student Writing](https://www.kaggle.com/competitions/feedback-prize-2021) for more details about the competition.
 
-### Please read my competition [report]() to know more details of my approach
+### Please read my competition [report](https://raw.githubusercontent.com/shanmukh05/EssayInsightsAI/main/analyzer/report/report.pdf) to know more details of my approach
 
 ## Chatbot 💬
 This section of the project is a web application that allows users to interact with an AI-powered chatbot for essay analysis. EssayInsightAI is an intelligent web app that helps students and writers improve their essays by:
