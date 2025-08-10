@@ -96,8 +96,7 @@ Whether you're preparing for an exam or polishing an academic submission, EssayI
     - Top encoder layers were frozen to reduce the training time and memory usage.
     - Configs for the above models are provided in the `analyzer\configs` folder.
 - #### Model training
-    - I used JarvisLabs.AI's RTX6000Ada GPU with 24GB VRAM for all the training.
-    - All the models are trained using AdamW optimizer with a initial learning rate of `2e-6` and CosineAnnealingLR scheduler. 
+    - Refer to <a href="/analyzer/report/report.pdf">report</a> for detailed training strategies and hyperparameters used.
 - #### Postprocessing
     - Finetuned model results can be further improved by following postprocessing steps:
         - **Soft Voting**: Multiple finetuned models softmax probabilities are averaged for all tokens.
